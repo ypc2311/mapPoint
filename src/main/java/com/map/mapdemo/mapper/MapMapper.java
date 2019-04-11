@@ -1,6 +1,6 @@
 package com.map.mapdemo.mapper;
 
-import com.map.mapdemo.entity.MapPoint;
+import com.map.mapdemo.model.MapPoint;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

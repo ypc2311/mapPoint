@@ -5,23 +5,12 @@ spring:
     datasource:
         name: test
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://140.143.193.163:3306/mapPint
+        url: jdbc:mysql://140.143.193.163:3306/mapPint?useUnicode=true&characterEncoding=UTF-8
         username: root
         password:
-        # 使用druid数据源
-        type: com.alibaba.druid.pool.DruidDataSource
-        filters: stat
-        maxActive: 20
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
+
 mybatis:
-  mapper-locations: classpath*:mybatis/mapper/*.xml
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.map.mapdemo.mapper
+
+

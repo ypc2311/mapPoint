@@ -1,4 +1,4 @@
-package com.map.mapdemo.entity;
+package com.map.mapdemo.model;
 
 public class MapPoint {
     private int id;

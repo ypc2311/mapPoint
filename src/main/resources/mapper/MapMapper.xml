@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mapdemo.mapper.MapMapper">
+
+    <resultMap id="MapPointMap" type="com.map.mapdemo.model.MapPoint">
+        <result property="name" column="name"/>
+        <result property="pointLng" column="pointLng"/>
+        <result property="pointLat" column="pointLat"/>
+        <result property="icon" column="icon"/>
+        <result property="text" column="text"/>
+        <result property="str1" column="str1"/>
+        <result property="str2" column="str2"/>
+        <result property="str2" column="createTime"/>
+        <result property="str2" column="updateTime"/>
+    </resultMap>
+
+    <select id="getAllMapPoint" resultType="com.map.mapdemo.model.MapPoint">
+        SELECT * FROM MAP_POINT
+    </select>
+
+</mapper>
