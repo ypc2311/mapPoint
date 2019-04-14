@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.mapdemo.mapper.MapMapper">
+<mapper namespace="com.map.mapdemo.dao.MapMapper">
 
     <resultMap id="MapPointMap" type="com.map.mapdemo.model.MapPoint">
         <result property="name" column="name"/>
@@ -16,7 +16,7 @@
         <result property="str2" column="updateTime"/>
     </resultMap>
 
-    <select id="getAllMapPoint" resultType="com.map.mapdemo.model.MapPoint">
+    <select id="getAllMapPoint" resultType="MapPoint">
         SELECT * FROM MAP_POINT
     </select>
 

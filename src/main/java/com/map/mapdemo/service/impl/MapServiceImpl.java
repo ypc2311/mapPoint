@@ -1,7 +1,7 @@
 package com.map.mapdemo.service.impl;
 
 import com.map.mapdemo.model.MapPoint;
-import com.map.mapdemo.mapper.MapMapper;
+import com.map.mapdemo.dao.MapMapper;
 import com.map.mapdemo.service.MapService;
 import org.springframework.stereotype.Service;
 
