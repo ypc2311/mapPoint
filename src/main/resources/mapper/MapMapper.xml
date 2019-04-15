@@ -2,9 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.map.mapdemo.dao.MapMapper">
-
-    <resultMap id="MapPointMap" type="com.map.mapdemo.model.MapPoint">
+<mapper namespace="com.mapdemo.dao.MapMapper">
+    <resultMap id="MapPointMap" type="com.mapdemo.model.MapPoint">
         <result property="name" column="name"/>
         <result property="pointLng" column="pointLng"/>
         <result property="pointLat" column="pointLat"/>
@@ -12,12 +11,31 @@
         <result property="text" column="text"/>
         <result property="str1" column="str1"/>
         <result property="str2" column="str2"/>
-        <result property="str2" column="createTime"/>
-        <result property="str2" column="updateTime"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="updateTime"/>
     </resultMap>
 
     <select id="getAllMapPoint" resultType="MapPoint">
         SELECT * FROM MAP_POINT
     </select>
 
+    <select id="selectMapPointById" resultType="MapPoint" parameterType="int">
+        SELECT * FROM MAP_POINT WHERE id = #{id}
+    </select>
+
+    <insert id="insertMapPoint" parameterType="MapPoint">
+        INSERT INTO MAP_POINT
+        (name,pointLng,pointLat,icon,text,str1,str2,createTime,updateTime) VALUES
+        (#{name},#{pointLng},#{pointLat},#{icon},#{text},#{str1},#{str2},#{createTime},#{updateTime});
+    </insert>
+
+    <delete id="deleteMapPointById" parameterType="int">
+        delete from MAP_POINT where id=#{id}
+    </delete>
+
+    <update id="updateMapPoint" parameterType="MapPoint">
+        update MAP_POINT set name=#{name},pointLng=#{pointLng},pointLat=#{pointLat},
+        icon=#{icon},text=#{text},str1=#{str1},str2=#{str2},createTime=#{createTime},
+        updateTime=#{updateTime} where id=#{id}
+    </update>
 </mapper>
