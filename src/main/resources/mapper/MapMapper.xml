@@ -8,6 +8,7 @@
         <result property="pointLng" column="pointLng"/>
         <result property="pointLat" column="pointLat"/>
         <result property="icon" column="icon"/>
+        <result property="status" column="status"/>
         <result property="text" column="text"/>
         <result property="str1" column="str1"/>
         <result property="str2" column="str2"/>
@@ -16,7 +17,7 @@
     </resultMap>
 
     <select id="getAllMapPoint" resultType="MapPoint">
-        SELECT * FROM MAP_POINT
+        SELECT * FROM MAP_POINT WHERE status = 1
     </select>
 
     <select id="selectMapPointById" resultType="MapPoint" parameterType="int">
@@ -25,8 +26,8 @@
 
     <insert id="insertMapPoint" parameterType="MapPoint">
         INSERT INTO MAP_POINT
-        (name,pointLng,pointLat,icon,text,str1,str2,createTime,updateTime) VALUES
-        (#{name},#{pointLng},#{pointLat},#{icon},#{text},#{str1},#{str2},#{createTime},#{updateTime});
+        (name,pointLng,pointLat,icon,status,text,str1,str2,createTime,updateTime) VALUES
+        (#{name},#{pointLng},#{pointLat},#{icon},#{status},#{text},#{str1},#{str2},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteMapPointById" parameterType="int">
@@ -34,8 +35,36 @@
     </delete>
 
     <update id="updateMapPoint" parameterType="MapPoint">
-        update MAP_POINT set name=#{name},pointLng=#{pointLng},pointLat=#{pointLat},
-        icon=#{icon},text=#{text},str1=#{str1},str2=#{str2},createTime=#{createTime},
-        updateTime=#{updateTime} where id=#{id}
+        update MAP_POINT
+        <set>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="pointLng!=null">
+                pointLng=#{pointLng},
+            </if>
+            <if test="pointLat!=null">
+                pointLat=#{pointLat},
+            </if>
+            <if test="icon!=null">
+                icon=#{icon},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="text!=null">
+                text=#{text},
+            </if>
+            <if test="str1!=null">
+                str1=#{str1},
+            </if>
+            <if test="str2!=null">
+                str2=#{str2},
+            </if>
+            <if test="updateTime!=null">
+                updateTime=#{updateTime},
+            </if>
+        </set>
+         where id=#{id}
     </update>
 </mapper>

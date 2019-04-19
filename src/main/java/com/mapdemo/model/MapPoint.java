@@ -6,6 +6,7 @@ public class MapPoint {
     private String pointLat;
     private String name;
     private String icon;
+    private int status;
     private String text;
     private String str1;
     private String str2;
@@ -44,6 +45,14 @@ public class MapPoint {
         this.name = name;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public String getIcon() {
         return icon;
     }
@@ -51,7 +60,6 @@ public class MapPoint {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-
     public String getText() {
         return text;
     }
@@ -101,6 +109,7 @@ public class MapPoint {
                 ", pointLat='" + pointLat + '\'' +
                 ", name='" + name + '\'' +
                 ", icon='" + icon + '\'' +
+                ", status='" + status + '\'' +
                 ", text='" + text + '\'' +
                 ", str1='" + str1 + '\'' +
                 ", str2='" + str2 + '\'' +

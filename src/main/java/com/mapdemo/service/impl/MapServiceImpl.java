@@ -17,15 +17,19 @@ public class MapServiceImpl implements MapService {
     public  List<MapPoint> getAllMapPoint(){
         return mapMapper.getAllMapPoint();
     }
+    @Override
     public void setMapPoint(MapPoint mapPoint) {
         mapMapper.insertMapPoint(mapPoint);
     }
+    @Override
     public void delMapPointById(int id) {
         mapMapper.deleteMapPointById(id);
     }
+    @Override
     public MapPoint getMapPointById(int id) {
         return mapMapper.selectMapPointById(id);
     }
+    @Override
     public void updateMapPoint(MapPoint mapPoint) {
         mapMapper.updateMapPoint(mapPoint);
     }
