@@ -116,7 +116,6 @@ public class MapController {
         if(id != null && !"".equals(id)){
             try {
                 mapServiceImpl.delMapPointById(Integer.parseInt(id));
-
             } catch (Exception e) {
                 logger.debug("#updateMapPoint:" + e.getMessage());
             }
