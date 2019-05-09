@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.mapdemo.util.Statics;
 
 /**
  * MapController class
@@ -24,22 +28,31 @@ public class MapController {
     @Resource
     private MapServiceImpl mapServiceImpl;
     private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
-
-    @RequestMapping(value="/getAllMapPoint",produces="text/html;charset=UTF-8")
-    public String getAllMapPoint(){
+    @RequestMapping(value="/getAllMapPoint")
+    public Map<String,Object> getAllMapPoint(){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","请求失败");
         String mapPointsStr = "";
         try {
             List<MapPoint> mapPoints =  mapServiceImpl.getAllMapPoint();
             mapPointsStr = JSON.toJSONString(mapPoints);
+            result.put("code",Statics.RESULT_SUCCESS);
+            result.put("msg","请求成功");
+            result.put("data",mapPointsStr);
         } catch (Exception e) {
             logger.debug("#getAllMapPoint:" + e.getMessage());
         }
-        return mapPointsStr;
+        return result;
     }
     @RequestMapping("/setMapPoint")
-    public String setMapPoint(HttpServletRequest request){
+    public Map<String,Object> setMapPoint(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","请求失败");
+
         String timestamp = DateUtil.getTimestamp();
-        String timestampName = "洪武"+timestamp.substring(timestamp.length()-5, timestamp.length());
+        String timestampName = "HW"+timestamp.substring(timestamp.length()-5, timestamp.length());
 
         String name = request.getParameter("name") != null ? request.getParameter("name") : timestampName;
         String icon = request.getParameter("icon");
@@ -60,26 +73,55 @@ public class MapController {
         point.setUpdateTime(DateUtil.getDateTime());
         point.setText(text);
         try {
-            mapServiceImpl.setMapPoint(point);
+            int code = mapServiceImpl.setMapPoint(point);
+            if(code > 0) {
+                result.put("code", Statics.RESULT_SUCCESS);
+                result.put("msg", "请求成功");
+                result.put("data", point);
+            }
         } catch (Exception e) {
             logger.debug("#setMapPoint:" + e.getMessage());
         }
-        return "";
+        return result;
     }
 
     @RequestMapping(value="/getMapPointById",produces="text/html;charset=UTF-8")
-    public String getMapPoint(HttpServletRequest request){
+    public Map<String,Object> getMapPoint(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","请求失败");
         String id = request.getParameter("id");
         if(id != null && !"".equals(id)){
             MapPoint point = mapServiceImpl.getMapPointById(Integer.parseInt(id));
-            return JSON.toJSONString(point);
-        }else{
-            return "1";
+            result.put("code",Statics.RESULT_SUCCESS);
+            result.put("msg","请求成功");
+            result.put("data",point.toString());
+            return result;
         }
+        return result;
+    }
+
+    @RequestMapping(value="/getMapPointByName",produces="text/html;charset=UTF-8")
+    public Map<String,Object> getMapPointByName(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","请求失败");
+        String name = request.getParameter("name");
+        if(name != null && !"".equals(name)){
+            MapPoint point = mapServiceImpl.getMapPointByName(name);
+            result.put("code",Statics.RESULT_SUCCESS);
+            result.put("msg","请求成功");
+            result.put("data",point.toString());
+            return result;
+        }
+        return result;
     }
 
     @RequestMapping("/updateMapPoint")
-    public String updateMapPoint(HttpServletRequest request){
+    public Map<String,Object> updateMapPoint(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","更新失败");
         MapPoint point = new MapPoint();
         String id = request.getParameter("id");
         if(id != null && !"".equals(id)){
@@ -100,28 +142,55 @@ public class MapController {
             point.setUpdateTime(DateUtil.getDateTime());
             point.setText(text);
             try {
-                mapServiceImpl.updateMapPoint(point);
+                int code = mapServiceImpl.updateMapPoint(point);
+                if(code == 1) {
+                    result.put("code", Statics.RESULT_SUCCESS);
+                    result.put("msg", "更新成功");
+                }
             } catch (Exception e) {
                 logger.debug("#updateMapPoint:" + e.getMessage());
             }
-            return "0";
-        }else{
-            return "1";
+            return result;
         }
+        return result;
     }
 
-    @RequestMapping("/delMapPoint")
-    public String delMapPoint(HttpServletRequest request){
+    @RequestMapping("/delMapPointById")
+    public Map<String,Object> delMapPointById(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","删除失败");
         String id = request.getParameter("id");
         if(id != null && !"".equals(id)){
             try {
-                mapServiceImpl.delMapPointById(Integer.parseInt(id));
+                int code = mapServiceImpl.delMapPointById(Integer.parseInt(id));
+                if(code == 1){
+                    result.put("code",Statics.RESULT_FAILURE);
+                    result.put("msg","删除成功");
+                }
             } catch (Exception e) {
                 logger.debug("#updateMapPoint:" + e.getMessage());
             }
-            return "0";
-        }else{
-            return "1";
         }
+        return result;
+    }
+    @RequestMapping("/delMapPointByName")
+    public Map<String,Object> delMapPointByName(HttpServletRequest request){
+        Map<String,Object> result =new HashMap<String,Object>();
+        result.put("code",Statics.RESULT_FAILURE);
+        result.put("msg","删除失败");
+        String name = request.getParameter("name");
+        if(name != null && !"".equals(name)){
+            try {
+                int code = mapServiceImpl.delMapPointByName(name);
+                if(code == 1){
+                    result.put("code",Statics.RESULT_FAILURE);
+                    result.put("msg","删除成功");
+                }
+            } catch (Exception e) {
+                logger.debug("#updateMapPoint:" + e.getMessage());
+            }
+        }
+        return result;
     }
 }

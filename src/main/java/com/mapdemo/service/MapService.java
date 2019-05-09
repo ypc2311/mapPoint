@@ -7,11 +7,15 @@ import java.util.List;
 public interface MapService {
     List<MapPoint> getAllMapPoint();
 
-    public void setMapPoint(MapPoint mapPoint);
+    public int setMapPoint(MapPoint mapPoint);
 
-    public void delMapPointById(int id);
+    public int delMapPointById(int id);
+
+    public int delMapPointByName(String name);
 
     public MapPoint getMapPointById(int id);
 
-    public void updateMapPoint(MapPoint mapPoint);
+    public MapPoint getMapPointByName(String name);
+
+    public int updateMapPoint(MapPoint mapPoint);
 }

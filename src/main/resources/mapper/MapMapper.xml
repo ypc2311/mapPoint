@@ -24,7 +24,11 @@
         SELECT * FROM MAP_POINT WHERE id = #{id}
     </select>
 
-    <insert id="insertMapPoint" parameterType="MapPoint">
+    <select id="selectMapPointByName" resultType="MapPoint" parameterType="String">
+        SELECT * FROM MAP_POINT WHERE name = #{name}
+    </select>
+
+    <insert id="insertMapPoint" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="MapPoint">
         INSERT INTO MAP_POINT
         (name,pointLng,pointLat,icon,status,text,str1,str2,createTime,updateTime) VALUES
         (#{name},#{pointLng},#{pointLat},#{icon},#{status},#{text},#{str1},#{str2},#{createTime},#{updateTime});
@@ -32,6 +36,10 @@
 
     <delete id="deleteMapPointById" parameterType="int">
         delete from MAP_POINT where id=#{id}
+    </delete>
+
+    <delete id="deleteMapPointByName" parameterType="String">
+        delete from MAP_POINT where name=#{name}
     </delete>
 
     <update id="updateMapPoint" parameterType="MapPoint">

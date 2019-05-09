@@ -7,8 +7,10 @@ import java.util.List;
 @Repository
 public interface MapMapper {
     List<MapPoint> getAllMapPoint();
-    public void insertMapPoint(MapPoint mapPoint);
-    public void deleteMapPointById(int id);
+    public int insertMapPoint(MapPoint mapPoint);
+    public int deleteMapPointById(int id);
+    public int deleteMapPointByName(String id);
     public MapPoint selectMapPointById(int id);
-    public void updateMapPoint(MapPoint mapPoint);
+    public MapPoint selectMapPointByName(String name);
+    public int updateMapPoint(MapPoint mapPoint);
 }

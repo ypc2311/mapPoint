@@ -5,6 +5,6 @@
     <title>test</title>
 </head>
     <body>
-    <p id="test">Hello World!</p>
+    <p id="test">mapDemo running!</p>
     </body>
 </html>
