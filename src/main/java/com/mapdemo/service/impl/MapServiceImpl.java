@@ -26,7 +26,12 @@ public class MapServiceImpl implements MapService {
     }
     @Override
     public int setMapPoint(MapPoint mapPoint) {
-        return mapMapper.insertMapPoint(mapPoint);
+        //如果有更新
+        if(mapPoint.getId() > 0){
+            return mapMapper.updateMapPoint(mapPoint);
+        }else{
+            return mapMapper.insertMapPoint(mapPoint);
+        }
     }
     @Override
     public int delMapPointById(int id) {

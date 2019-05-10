@@ -50,7 +50,8 @@ public class MapController {
         Map<String,Object> result =new HashMap<String,Object>();
         result.put("code",Statics.RESULT_FAILURE);
         result.put("msg","请求失败");
-
+        String id = request.getParameter("id");
+        int code = 0;
         String timestamp = DateUtil.getTimestamp();
         String timestampName = "HW"+timestamp.substring(timestamp.length()-5, timestamp.length());
 
@@ -62,6 +63,7 @@ public class MapController {
         String str2 = request.getParameter("str2");
         String text = request.getParameter("text");
         MapPoint point = new MapPoint();
+        point.setName(id);
         point.setName(name);
         point.setIcon(icon);
         point.setStatus(1);
@@ -73,14 +75,14 @@ public class MapController {
         point.setUpdateTime(DateUtil.getDateTime());
         point.setText(text);
         try {
-            int code = mapServiceImpl.setMapPoint(point);
-            if(code > 0) {
-                result.put("code", Statics.RESULT_SUCCESS);
-                result.put("msg", "请求成功");
-                result.put("data", point);
-            }
+            code = mapServiceImpl.setMapPoint(point);
         } catch (Exception e) {
             logger.debug("#setMapPoint:" + e.getMessage());
+        }
+        if(code > 0) {
+            result.put("code", Statics.RESULT_SUCCESS);
+            result.put("msg", "请求成功");
+            result.put("data", point);
         }
         return result;
     }
