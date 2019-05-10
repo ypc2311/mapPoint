@@ -11,13 +11,13 @@ import java.util.Date;
 public class DateUtil {
     private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
     /** 日期格式yyyy-MM-dd字符串常量 */
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     /** 日期格式yyyy MM dd字符串常量 */
-    public static final String DATE_FORMAT_BANK = "yyyy MM dd";
+    private static final String DATE_FORMAT_BANK = "yyyy MM dd";
     /** 日期格式HH:mm:ss字符串常量 */
-    public static final String HOUR_FORMAT = "HH:mm:ss";
+    private static final String HOUR_FORMAT = "HH:mm:ss";
     /** 日期格式yyyy-MM-dd HH:mm:ss字符串常量 */
-    public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static SimpleDateFormat sdf_date_format = new SimpleDateFormat(DATE_FORMAT);
     private static SimpleDateFormat sdf_date_format_bank = new SimpleDateFormat(DATE_FORMAT_BANK);
