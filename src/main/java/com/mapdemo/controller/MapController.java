@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.mapdemo.model.MapPoint;
 import com.mapdemo.service.impl.MapServiceImpl;
 import com.mapdemo.util.DateUtil;
+import com.mapdemo.util.FastDFSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -194,5 +196,17 @@ public class MapController {
             }
         }
         return result;
+    }
+
+    @RequestMapping(value = "file/uploadFast",method = RequestMethod.GET)
+    public String uploadFast(HttpServletRequest request)throws Exception {
+        // 1、把FastDFS提供的jar包添加到工程中
+        // 2、初始化全局配置。加载一个配置文件。
+        String confUrl = this.getClass().getClassLoader().getResource("/fdfs_client.properties").getPath();
+        FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
+        //上传文件
+        String filePath = fastDFSClient.uploadFile("C:\\Users\\lamero\\Desktop\\20190527-6517b56851f6897c_680x5000.jpg");
+        System.out.println("返回路径：" + filePath);
+        return filePath;
     }
 }

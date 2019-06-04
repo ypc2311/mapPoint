@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
+    <title>mapDemo</title>
 </head>
     <body>
     <p id="test">mapDemo running!</p>
