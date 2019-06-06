@@ -1,23 +1,29 @@
 package com.mapdemo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.mapdemo.model.MyFile;
 import com.mapdemo.model.MapPoint;
 import com.mapdemo.service.impl.MapServiceImpl;
 import com.mapdemo.util.DateUtil;
 import com.mapdemo.util.FastDFSClient;
+import org.csource.common.NameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.mapdemo.util.Statics;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  * MapController class
@@ -198,15 +204,56 @@ public class MapController {
         return result;
     }
 
-    @RequestMapping(value = "file/uploadFast",method = RequestMethod.GET)
+    @RequestMapping(value = "/uploadFile",method = RequestMethod.POST)
+    @ResponseBody
     public String uploadFast(HttpServletRequest request)throws Exception {
-        // 1、把FastDFS提供的jar包添加到工程中
-        // 2、初始化全局配置。加载一个配置文件。
+        MultipartHttpServletRequest multipartRequest = null;
+        List<MultipartFile> files = new ArrayList<MultipartFile>();
+        String filePath = "";
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        if(multipartResolver.isMultipart(request)) {
+            try {
+                multipartRequest = (MultipartHttpServletRequest)request;
+                files = multipartRequest.getFiles("file");
+                // 获取文件map集合
+                Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+                System.out.println("files：" + files);
+                System.out.println("fileMap：" + fileMap);
+            } catch (Exception e) {
+                return new LinkedList<MultipartFile>().toString();
+            }
+        }
         String confUrl = this.getClass().getClassLoader().getResource("/fdfs_client.properties").getPath();
         FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
-        //上传文件
-        String filePath = fastDFSClient.uploadFile("C:\\Users\\lamero\\Desktop\\20190527-6517b56851f6897c_680x5000.jpg");
-        System.out.println("返回路径：" + filePath);
-        return filePath;
+
+        List<MyFile> myFilePaths = new ArrayList<MyFile>();
+        for(MultipartFile file:files){
+            String fileNameStr = file.getOriginalFilename();
+            String  fileType = fileNameStr.substring(fileNameStr.indexOf(".")+1,fileNameStr.length());
+            String  fileName = fileNameStr.substring(0,fileNameStr.indexOf(".")-1);
+            byte[] fileByte = file.getBytes();
+            long fileSize = file.getSize();
+            String fileExtName = fileNameStr.substring(fileNameStr.lastIndexOf("."));
+            //设置元信息
+            NameValuePair[] metaList = new NameValuePair[3];
+            metaList[0] = new NameValuePair("fileName", fileName);
+            metaList[1] = new NameValuePair("fileExtName", fileExtName);
+            metaList[2] = new NameValuePair("fileLength", String.valueOf(fileSize));
+            //上传文件
+            try {
+                //logger.info("fastDFSClient.uploadFile start confUrl =>"+e.getMessage());
+                filePath = fastDFSClient.uploadFile(fileByte,fileType,metaList);
+            }catch (Exception e){
+                logger.info("fastDFSClient.uploadFile e =>"+e.getMessage());
+            }
+            MyFile myFile = new MyFile();
+            myFile.setFileName(fileName);
+            myFile.setFileSize(fileSize);
+            myFile.setFileType(fileType);
+            myFile.setFilePath(filePath);
+            myFilePaths.add(myFile);
+        }
+        String fileJsons = JSON.toJSONString(myFilePaths);
+        return fileJsons;
     }
 }
